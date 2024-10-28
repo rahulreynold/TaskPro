@@ -1,0 +1,72 @@
+{%extends 'basepage.html'%}
+
+{%block main_block%}
+
+<div class="container">
+    <div class="w-50">
+        <h1>Welcome {{request.user}}</h1>
+        <form>
+            <select name="category" id="" class="form-select" onchange="this.form.submit()">
+                <option value="all"{% if selected == 'all'%}selected{%endif%}>All</option>
+                <option value="personal"{% if selected == 'personal'%}selected{%endif%}>Personal</option>
+                <option value="business"{% if selected == 'business'%}selected{%endif%}>Business</option>
+            </select>
+            
+        </form>
+        <form action="">
+            <input type="text" placeholder="enter the key" name="search_text">
+            <button type="submit" class="btn btn-success">Search</button>
+
+        </form>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row">
+
+        {%for t in tasks%}
+        <div class="col-4">
+            <div class="card text-bg-dark mb-3" style="max-width: 18rem;">
+                <div class="card-header d-flex justify-content-between">
+                    <div>{{t.user}}</div>
+                    <div>
+                        {%if t.status == 'pending'%}
+                        <div class="bg-danger rounded">.</div>
+                        {%endif%}
+                    </div>
+                    <div>
+                        {%if t.status == 'in-progress'%}
+                        <div class="bg-warning rounded">.</div>
+                        {%endif%}
+                    </div>
+                    <div>
+                        {%if t.status == 'done'%}
+                        <div class="bg-success rounded">.</div>
+                        {%endif%}
+                    </div>
+
+                    <div>{{t.status}}</div>
+                    
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{t.title}}</h5>
+                    <p class="card-text">{{t.description}}</p>
+                </div>
+                <div class="card-footer text-body-white">
+                    created_date:{{t.created_date|date}}
+                    due_date:{{t.due_date|date}}
+                    updated_date:{{t.updated_date|date}}
+
+                    <a href="{%url 'task-update' t.id %}">Update</a>
+                    <a href="{%url 'task-delete' t.id %}">Delete</a>
+                </div>
+            </div>
+        
+
+    </div>
+    {%endfor%}
+
+</div>
+
+</div>
+{%endblock%}
